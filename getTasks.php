@@ -1,7 +1,7 @@
 <?php
-$servername = "jukeboxprint.com";
-$username = "test_dev";
-$password = "testuser";
+$servername = "localhost";
+$username = "username";
+$password = "password";
 $dbname = "dev_exam";
 
 class Task {
