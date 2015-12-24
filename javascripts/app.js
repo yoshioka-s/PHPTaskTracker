@@ -1,49 +1,60 @@
 angular.module('todo', [])
 .controller('SearchCtrl', function ($scope, TodoService)/*probably requires 'UserService' from services*/ {
 
-  	TodoService.getTasks()
-	.then(function(tasks, status) {
-		$scope.status = status;
-		$scope.tasks = tasks;
-		console.log(tasks);	
-	});
-		
-	// The function that will be executed on button click (ng-click="search()")
+  var getTasks = function() {
+    TodoService.getTasks()
+  	.then(function(tasks, status) {
+  		$scope.status = status;
+      $scope.tasks = tasks;
+  		// console.log(tasks);
+  	});
+  };
+
+  getTasks();
+	// send a new task to the server
 	$scope.createTask = function() {
-		TodoService.createTask($scope.name, $scope.notes)
-		.then(function(data, status) {
-			if (data) {
-				console.log("Request success");	
-			} else {
-				console.log("Request failed");	
-			};
+    var task = {
+      name: $scope.name,
+      notes: $scope.notes
+    };
+		TodoService.createTask(task)
+		.then(function(data) {
+      // update the task list
+      getTasks();
 		});
 	};
 })
+
+/*
+  TodoService
+  manages ajax requests
+*/
 .factory('TodoService', function ($http, $q) {
 
 	function createTask (task) {
-	 	return $http.post('createTask.php', { "data" : "shu"})
-	 	.then(function(res){
-		    // console.log("getListOfPLaylists: ",res.data);
+	  return $http.post('createTask.php', task)
+	  .then(function successCallback(res){
+      console.log('successCallback');
+      console.log(res);
 		    return res.data;
-	   	},function(error) {
-	    	console.log(error);
-	    	return;
-	  	});;
+	  }, function errorCallback (error) {
+      console.log('ERRRRR');
+    	console.log(error);
+    });
 	}
 
 	function getTasks () {
 		return $http.get('getTasks.php')
-		.then(function(res){
-		    // console.log("getListOfPLaylists: ",res.data);
+		.then(function successCallback (res){
 		    return res.data;
-	   	},function(error) {
-	    	console.log(error);
-	    	return;
-	  	});
+	  }, function errorCallback(error) {
+      console.log('ERRRRR');
+    	console.log(error);
+  	});
 	}
-	return {createTask: createTask,
+
+	return {
+    createTask: createTask,
 		getTasks: getTasks
- };
+  };
 });

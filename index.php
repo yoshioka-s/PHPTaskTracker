@@ -22,24 +22,24 @@
 				<tr ng-repeat="task in tasks">
 					<td>{{task.name}}</td>
 					<td>{{task.notes}}</td>
-					<td>{{task.date}}</td>
+					<td>{{task.created}}</td>
 					<td>{{task.actions}}</td>
 				</tr>
 			</tbody>
 		</table>
-		<form class="well form-search">
+		<form class="well form-search" id="task_form">
 			<label>Task name:</label>
 			<input type="text" ng-model="name" placeholder="name">
 			<br>
 			<label>Notes:</label>
-			<input type="text" ng-model="notes" placeholder="notes">
+			<textarea type="text" ng-model="notes" placeholder="notes" form="task_form"></textarea>
 			<br>
 			<button type="submit" ng-click="createTask()">submit</button>
-    	</form>
+  	</form>
 <pre ng-model="result">
 {{result}}
 </pre>
    </div>
 </body>
 
-</html> 
+</html>
