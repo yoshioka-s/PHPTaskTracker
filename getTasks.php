@@ -1,14 +1,16 @@
 <?php
 $servername = "localhost";
-$username = "username";
-$password = "password";
+$username = "shu";
+$password = "shusql";
 $dbname = "dev_exam";
 
 class Task {
-	function __construct($name, $notes){
+	function __construct($name, $notes, $created){
 		$this->name = $name;
-        $this->notes = $notes;
-        $this->date = "Y/m/d";
+      $this->notes = $notes;
+			$created_datetime = strtotime($created);
+			$created_date = date('F j Y', $created_datetime);
+      $this->created = $created_date;
 	}
 }
 
@@ -23,10 +25,10 @@ $sql = "SELECT * FROM tasks order by created";
 $tasks = $conn->query($sql);
 $results = array();
 if ($tasks->num_rows > 0) {
-    // output data of each row
-    while($row = $tasks->fetch_assoc()) {
-    	array_push($results,  new Task($row["name"], $row["notes"], $row["created"]));
-    }
+  // output data of each row
+  while($row = $tasks->fetch_assoc()) {
+  	array_push($results,  new Task($row["name"], $row["notes"], $row["created"]));
+  }
 }
 echo json_encode($results);
 $conn->close();
