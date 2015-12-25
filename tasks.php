@@ -1,54 +1,58 @@
 <?php
-$servername = "localhost";
-$username = "shu";
-$password = "shusql";
-$dbname = "dev_exam";
-
+require 'secret.php';
 // Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE);
 // Check connection
 if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
 
 // get request data
-$dataString = file_get_contents("php://input");
-$request = json_decode($dataString, true);
+$request = json_decode(file_get_contents("php://input"), true);
 $name = $request['name'];
 $notes = $request['notes'];
 $id = $request['id'];
 
 $result = "Failed";
 try {
-  // manage each methods
+  // handle each methods
   switch ($_SERVER['REQUEST_METHOD']) {
 
     case 'POST':
+      // insert the new task
       $sql = "INSERT INTO tasks (name, notes, created)
               VALUES ('$name', '$notes', NOW())";
+
       if ($conn->query($sql) === TRUE) {
         $result = "Success";
       }
       break;
 
     case 'PUT':
+      // update the task
       $sql = "UPDATE tasks SET name = '$name', notes = '$notes' WHERE id = '$id'";
+
       if ($conn->query($sql) === TRUE) {
         $result = "Success";
       }
       break;
 
     case 'DELETE':
+      // update active to 0  !!do not DELETE!!
       parse_str($_SERVER["QUERY_STRING"], $qs);
       $id = $qs['id'];
+
       $sql = "UPDATE tasks SET active = 0 WHERE id =  '$id'";
+
       if ($conn->query($sql) === TRUE) {
         $result = "Success";
       }
       break;
 
     case 'GET':
-      $sql = "SELECT * FROM tasks WHERE active = 1 order by created";
+      // select tasks which is active in the order they were created
+      $sql = "SELECT id, name, notes, DATE_FORMAT(created, '%M %D, %Y') AS created
+              FROM tasks WHERE active = 1 order by created";
 
       $tasks = $conn->query($sql);
       $results = array();
@@ -62,9 +66,10 @@ try {
       break;
 
     default:
-      echo "unexpected method";
+      $result = "unexpected method";
       break;
   }
+
 } catch (Exception $e) {
   echo $e;
 } finally {
