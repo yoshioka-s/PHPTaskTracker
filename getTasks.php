@@ -5,12 +5,13 @@ $password = "shusql";
 $dbname = "dev_exam";
 
 class Task {
-	function __construct($name, $notes, $created){
+	function __construct($id, $name, $notes, $created){
+		$this->id = $id;
 		$this->name = $name;
-      $this->notes = $notes;
-			$created_datetime = strtotime($created);
-			$created_date = date('F j Y', $created_datetime);
-      $this->created = $created_date;
+    $this->notes = $notes;
+		$created_datetime = strtotime($created);
+		$created_date = date('F j Y', $created_datetime);
+    $this->created = $created_date;
 	}
 }
 
@@ -27,7 +28,7 @@ $results = array();
 if ($tasks->num_rows > 0) {
   // output data of each row
   while($row = $tasks->fetch_assoc()) {
-  	array_push($results,  new Task($row["name"], $row["notes"], $row["created"]));
+  	array_push($results,  new Task($row["id"], $row["name"], $row["notes"], $row["created"]));
   }
 }
 echo json_encode($results);
