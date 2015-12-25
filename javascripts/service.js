@@ -21,7 +21,6 @@ angular.module('todo')
 	function getTasks () {
 		return $http.get(url)
 		.then(function successCallback (res){
-      console.log(res.data);
 	    return res.data;
 	  }, function errorCallback(error) {
       console.log('ERRRRR');
