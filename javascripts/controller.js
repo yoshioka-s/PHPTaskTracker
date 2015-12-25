@@ -1,6 +1,11 @@
 angular.module('todo', [])
+/*
+  TaskCtrl
+  manages user input and data
+*/
 .controller('TaskCtrl', function ($scope, TodoService)/*probably requires 'UserService' from services*/ {
 
+  // get active tasks and initialize the form
   var getTasks = function() {
     $scope.heading = 'New Task';
     $scope.action = 'Create';
@@ -64,64 +69,4 @@ angular.module('todo', [])
 
   getTasks();
 
-})
-
-/*
-  TodoService
-  manages ajax requests
-*/
-.factory('TodoService', function ($http, $q) {
-  var url = 'tasks.php';
-
-	function createTask (task) {
-	  return $http.post(url, task)
-	  .then(function successCallback(res){
-      console.log('successCallback');
-      console.log(res);
-	    return res.data;
-	  }, function errorCallback (error) {
-      console.log('ERRRRR');
-    	console.log(error);
-    });
-	}
-
-	function getTasks () {
-		return $http.get(url)
-		.then(function successCallback (res){
-      console.log(res.data);
-	    return res.data;
-	  }, function errorCallback(error) {
-      console.log('ERRRRR');
-    	console.log(error);
-  	});
-	}
-
-  function deleteTask(id) {
-    return $http.delete(url, {params: {id:id}})
-		.then(function successCallback (res){
-      console.log(res);
-	    return res.data;
-	  }, function errorCallback(error) {
-      console.log('ERRRRR');
-    	console.log(error);
-  	});
-  }
-
-  function updateTask(task) {
-    return $http.put(url, task)
-		.then(function successCallback (res){
-      console.log(res);
-	    return res.data;
-	  }, function errorCallback(error) {
-      console.log('ERRRRR');
-    	console.log(error);
-  	});
-  }
-
-	return {
-    createTask: createTask,
-		getTasks: getTasks,
-    deleteTask: deleteTask,
-    updateTask: updateTask
-  };
 });

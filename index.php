@@ -5,7 +5,8 @@
 	<link href='https://fonts.googleapis.com/css?family=Bevan' rel='stylesheet' type='text/css'>
 	<link href="css/styles.css" rel="stylesheet" type="text/css" />
 	<script src="http://code.angularjs.org/angular-1.0.0.min.js"></script>
-	<script src="javascripts/app.js"></script>
+	<script src="javascripts/controller.js"></script>
+	<script src="javascripts/service.js"></script>
 </head>
 
 <body>
