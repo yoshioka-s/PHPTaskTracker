@@ -23,18 +23,21 @@
 					<td>{{task.name}}</td>
 					<td>{{task.notes}}</td>
 					<td>{{task.created}}</td>
-					<td><button type="button" name="delete" ng-click="deleteTask(task.id)">delete</button></td>
+					<td>
+						<button type="button" name="edit" ng-click="clickEdit(task)">edit</button>
+						<button type="button" name="delete" ng-click="deleteTask(task)">delete</button></td>
 				</tr>
 			</tbody>
 		</table>
 		<form class="well form-search" id="task_form">
+			<h3>{{heading}}</h3>
 			<label>Task name:</label>
-			<input type="text" ng-model="name" placeholder="name">
+			<input type="text" ng-model="task.name" placeholder="name">
 			<br>
 			<label>Notes:</label>
-			<textarea type="text" ng-model="notes" placeholder="notes" form="task_form"></textarea>
+			<textarea type="text" ng-model="task.notes" placeholder="notes" form="task_form"></textarea>
 			<br>
-			<button type="submit" ng-click="createTask()">submit</button>
+			<button type="submit" ng-click="actions[action]()">{{action}}</button>
   	</form>
 <pre ng-model="result">
 {{result}}
