@@ -2,38 +2,66 @@ angular.module('todo', [])
 .controller('SearchCtrl', function ($scope, TodoService)/*probably requires 'UserService' from services*/ {
 
   var getTasks = function() {
+    $scope.heading = 'New Task';
+    $scope.action = 'Create';
+    // reset task
+    $scope.task = {
+      name: '',
+      notes: '',
+      id: null
+    };
     TodoService.getTasks()
-  	.then(function(tasks, status) {
-  		$scope.status = status;
+  	.then(function(tasks) {
       $scope.tasks = tasks;
-  		// console.log(tasks);
   	});
+  };
+
+  // on clicking delete button of each task
+  $scope.deleteTask = function (task) {
+    if (confirm('Are you sure to delete the task "' + task.name + '"?')) {
+      TodoService.deleteTask(task.id)
+  		.then(function(data) {
+        // update the task list
+        getTasks();
+  		});
+    }
+  };
+
+  // on clicking edit button of each task
+  $scope.clickEdit = function (task) {
+    $scope.task = {
+      name: task.name,
+      notes: task.notes,
+      id: task.id
+    };
+    $scope.heading = 'Edit Task';
+    $scope.action = 'Save';
+  };
+
+  // on clicking Create button on the form
+  var createTask = function() {
+    TodoService.createTask($scope.task)
+    .then(function(data) {
+      getTasks();
+    });
+  };
+
+  // on clicking Save button on the form
+  var updateTask = function () {
+    TodoService.updateTask($scope.task)
+    .then(function(data) {
+      getTasks();
+    });
+  };
+
+  // manages submit actions depending on the state (create or save)
+  $scope.actions = {
+    Create: createTask,
+    Save: updateTask
   };
 
   getTasks();
 
-  // send a new task to the server
-	$scope.createTask = function() {
-    var task = {
-      name: $scope.name,
-      notes: $scope.notes
-    };
-		TodoService.createTask(task)
-		.then(function(data) {
-      // update the task list
-      getTasks();
-		});
-	};
-
-  // send a delete request to the server
-  $scope.deleteTask = function (id) {
-    console.log(id);
-    TodoService.deleteTask(id)
-		.then(function(data) {
-      // update the task list
-      getTasks();
-		});
-  };
 })
 
 /*
@@ -75,9 +103,21 @@ angular.module('todo', [])
   	});
   }
 
+  function updateTask(task) {
+    return $http.put('edit.php', task)
+		.then(function successCallback (res){
+      console.log(res);
+	    return res.data;
+	  }, function errorCallback(error) {
+      console.log('ERRRRR');
+    	console.log(error);
+  	});
+  }
+
 	return {
     createTask: createTask,
 		getTasks: getTasks,
-    deleteTask: deleteTask
+    deleteTask: deleteTask,
+    updateTask: updateTask
   };
 });
