@@ -69,9 +69,10 @@ angular.module('todo', [])
   manages ajax requests
 */
 .factory('TodoService', function ($http, $q) {
+  var url = 'tasks.php';
 
 	function createTask (task) {
-	  return $http.post('createTask.php', task)
+	  return $http.post(url, task)
 	  .then(function successCallback(res){
       console.log('successCallback');
       console.log(res);
@@ -83,8 +84,9 @@ angular.module('todo', [])
 	}
 
 	function getTasks () {
-		return $http.get('getTasks.php')
+		return $http.get(url)
 		.then(function successCallback (res){
+      console.log(res.data);
 	    return res.data;
 	  }, function errorCallback(error) {
       console.log('ERRRRR');
@@ -93,7 +95,7 @@ angular.module('todo', [])
 	}
 
   function deleteTask(id) {
-    return $http.delete('deleteTask.php', {params: {id:id}})
+    return $http.delete(url, {params: {id:id}})
 		.then(function successCallback (res){
       console.log(res);
 	    return res.data;
@@ -104,7 +106,7 @@ angular.module('todo', [])
   }
 
   function updateTask(task) {
-    return $http.put('edit.php', task)
+    return $http.put(url, task)
 		.then(function successCallback (res){
       console.log(res);
 	    return res.data;
