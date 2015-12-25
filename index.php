@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="todo">
 <head>
-<title>Search form with AngualrJS</title>
+<title>Tasks</title>
 	<script src="http://code.angularjs.org/angular-1.0.0.min.js"></script>
 	<script src="javascripts/app.js"></script>
 </head>
@@ -23,7 +23,7 @@
 					<td>{{task.name}}</td>
 					<td>{{task.notes}}</td>
 					<td>{{task.created}}</td>
-					<td>{{task.actions}}</td>
+					<td><button type="button" name="delete" ng-click="deleteTask(task.id)">delete</button></td>
 				</tr>
 			</tbody>
 		</table>

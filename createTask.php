@@ -13,9 +13,9 @@ if ($conn->connect_error) {
 
 $dataString = file_get_contents("php://input");
 
-$objData = json_decode($dataString, true);
-$name = $objData['name'];
-$notes = $objData["notes"];
+$request = json_decode($dataString, true);
+$name = $request['name'];
+$notes = $request['notes'];
 $sql = "INSERT INTO tasks (name, notes, created)
 VALUES ('$name', '$notes', NOW())";
 $result = "false";
@@ -31,7 +31,7 @@ try {
 } finally {
   $conn->close();
   // echo $dataString;
-  echo json_encode($objData);
+  echo json_encode($request);
   // echo json_encode($request);
 }
 ?>

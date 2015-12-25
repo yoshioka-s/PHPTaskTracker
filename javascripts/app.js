@@ -11,7 +11,8 @@ angular.module('todo', [])
   };
 
   getTasks();
-	// send a new task to the server
+
+  // send a new task to the server
 	$scope.createTask = function() {
     var task = {
       name: $scope.name,
@@ -23,6 +24,16 @@ angular.module('todo', [])
       getTasks();
 		});
 	};
+
+  // send a delete request to the server
+  $scope.deleteTask = function (id) {
+    console.log(id);
+    TodoService.deleteTask(id)
+		.then(function(data) {
+      // update the task list
+      getTasks();
+		});
+  };
 })
 
 /*
@@ -36,7 +47,7 @@ angular.module('todo', [])
 	  .then(function successCallback(res){
       console.log('successCallback');
       console.log(res);
-		    return res.data;
+	    return res.data;
 	  }, function errorCallback (error) {
       console.log('ERRRRR');
     	console.log(error);
@@ -46,15 +57,27 @@ angular.module('todo', [])
 	function getTasks () {
 		return $http.get('getTasks.php')
 		.then(function successCallback (res){
-		    return res.data;
+	    return res.data;
 	  }, function errorCallback(error) {
       console.log('ERRRRR');
     	console.log(error);
   	});
 	}
 
+  function deleteTask(id) {
+    return $http.delete('deleteTask.php', {params: {id:id}})
+		.then(function successCallback (res){
+      console.log(res);
+	    return res.data;
+	  }, function errorCallback(error) {
+      console.log('ERRRRR');
+    	console.log(error);
+  	});
+  }
+
 	return {
     createTask: createTask,
-		getTasks: getTasks
+		getTasks: getTasks,
+    deleteTask: deleteTask
   };
 });
