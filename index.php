@@ -2,16 +2,23 @@
 <html ng-app="todo">
 <head>
 <title>Tasks</title>
+	<link href='https://fonts.googleapis.com/css?family=Bevan' rel='stylesheet' type='text/css'>
+	<link href="css/styles.css" rel="stylesheet" type="text/css" />
 	<script src="http://code.angularjs.org/angular-1.0.0.min.js"></script>
 	<script src="javascripts/app.js"></script>
 </head>
 
 <body>
-	<?php
-         echo "<h1>TASKS</h1>";
-    ?>
-	<div ng-controller="SearchCtrl">
-		<table>
+	<h1 class="title">TASKS</h1>
+
+	<div ng-controller="TaskCtrl">
+		<div ng-hide="isTaskExist">
+			<p>
+				There is no task created. Create a new task below.
+			</p>
+		</div>
+
+		<table ng-hide="!isTaskExist">
 			<tr>
 				<th>name</th>
 				<th>notes</th>
@@ -29,6 +36,7 @@
 				</tr>
 			</tbody>
 		</table>
+
 		<form class="well form-search" id="task_form">
 			<h3>{{heading}}</h3>
 			<label>Task name:</label>
@@ -37,11 +45,8 @@
 			<label>Notes:</label>
 			<textarea type="text" ng-model="task.notes" placeholder="notes" form="task_form"></textarea>
 			<br>
-			<button type="submit" ng-click="actions[action]()">{{action}}</button>
+			<button type="submit" ng-click="actions[action]()" ng-disabled="task.name.length < 1" class="submit-btn">{{action}}</button>
   	</form>
-<pre ng-model="result">
-{{result}}
-</pre>
    </div>
 </body>
 

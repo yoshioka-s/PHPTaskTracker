@@ -1,5 +1,5 @@
 angular.module('todo', [])
-.controller('SearchCtrl', function ($scope, TodoService)/*probably requires 'UserService' from services*/ {
+.controller('TaskCtrl', function ($scope, TodoService)/*probably requires 'UserService' from services*/ {
 
   var getTasks = function() {
     $scope.heading = 'New Task';
@@ -13,6 +13,8 @@ angular.module('todo', [])
     TodoService.getTasks()
   	.then(function(tasks) {
       $scope.tasks = tasks;
+      $scope.isTaskExist = tasks.length > 0;
+      console.log($scope.isTaskExist);
   	});
   };
 
